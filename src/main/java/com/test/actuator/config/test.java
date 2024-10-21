@@ -43,22 +43,13 @@ public class MyBatisPrimaryConfig implements ApplicationContextAware {
 
     private ApplicationContext context;
 
-    //    private static final String DB_GENESYS_URL = "db.genesys.url";
-    private static final String DB_GENESYS_USERNAME = "db.username";
-    private static final String DB_GENESYS_PASSWORD = "db.password";
-//    private static final String DB_GENESYS_MAX_ACTIVE = "db.genesys.maxActive";
-//    private static final String DB_GENESYS_MAX_IDLE = "db.genesys.maxIdle";
-//	private static final String DB_GENESYS_MAX_WAIT = "db.genesys.maxWait";
+    private static final String DB_GENESYS_URL = "db.genesys.url";
+    private static final String DB_GENESYS_USERNAME = "db.genesys.username";
+    private static final String DB_GENESYS_PASSWORD = "db.genesys.password";
+    private static final String DB_GENESYS_MAX_ACTIVE = "db.genesys.maxActive";
+    private static final String DB_GENESYS_MAX_IDLE = "db.genesys.maxIdle";
+    private static final String DB_GENESYS_MAX_WAIT = "db.genesys.maxWait";
 
-
-    @Value("${db.genesys.url}")
-    private   String DB_GENESYS_URL;
-    @Value("${db.genesys.maxActive:200}")
-    private   String DB_GENESYS_MAX_ACTIVE ;
-    @Value("${db.genesys.maxIdle}")
-    private   String DB_GENESYS_MAX_IDLE ;
-    @Value("${db.genesys.maxWait}")
-    private    String DB_GENESYS_MAX_WAIT;
     @Value( "${db.driver.class.name}" )
     private static String DB_DRIVER_CLASS_NAME;
 
@@ -67,13 +58,13 @@ public class MyBatisPrimaryConfig implements ApplicationContextAware {
     @Primary
     public DruidDataSource primaryDS() throws Exception{
 
-        final String url = Preconditions.checkNotNull(DB_GENESYS_URL);
+        final String url = Preconditions.checkNotNull(env.getProperty(DB_GENESYS_URL));
         final String username = Preconditions.checkNotNull(env.getProperty(DB_GENESYS_USERNAME));
         final String password = env.getProperty(DB_GENESYS_PASSWORD);
         //String pass = KeyManagerUtil.decryptInfo(password);
-        final int maxActive = Integer.parseInt(DB_GENESYS_MAX_ACTIVE);
-        final int maxIdle = Integer.parseInt(DB_GENESYS_MAX_IDLE);
-        final int maxWait = Integer.parseInt(DB_GENESYS_MAX_WAIT);
+        final int maxActive = Integer.parseInt(env.getProperty(DB_GENESYS_MAX_ACTIVE, "200"));
+        final int maxIdle = Integer.parseInt(env.getProperty(DB_GENESYS_MAX_IDLE));
+        final int maxWait = Integer.parseInt(env.getProperty(DB_GENESYS_MAX_WAIT));
 
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(DB_DRIVER_CLASS_NAME);
